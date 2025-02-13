@@ -9,6 +9,8 @@ class UserRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+    protected $stopOnFirstFailure = true;
+
     public function authorize(): bool
     {
         return true;
@@ -21,6 +23,14 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        if($this->isMethod('post')){
+            return $this->store();
+        }else{
+            return $this->update();
+        }
+    }
+    public function store(): array
+    {
         return [
             'name' => 'required|string|max:255',
             'email'=> 'required|email|unique:users,email',
@@ -28,6 +38,14 @@ class UserRequest extends FormRequest
         ];
     }
 
+    public function update(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'email'=> 'required|email|unique:users,email',
+            'password'=> 'required|min:8|max:255'
+        ];
+    }
 
     public function messages(): array
     {

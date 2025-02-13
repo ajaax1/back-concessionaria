@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Http\Services\UserService;
 
 class UserController extends Controller
 {
-    public function __construct(private User $user)
+    public function __construct(private UserService $user)
     {
     }
     public function index()
     {
-        return response()->json(['message' => 'Rota funcionando!']);
+        return $this->user->index();
     }
 
     /**
@@ -20,12 +20,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $data = $request->validated();
-        $user = User::create($data);
-        if(!$user){
-            return response()->json(['message' => 'Erro ao criar usuário'], 400);
-        }
-        return response()->json($user, 201);
+        return $this->user->store($request->all());
     }
 
     /**
@@ -33,15 +28,15 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return $this->user->show($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        return $this->user->update($request->all(), $id);
     }
 
     /**
@@ -49,6 +44,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return $this->user->destroy($id);
     }
 }
