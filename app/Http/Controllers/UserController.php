@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        return $this->user->store($request->all());
+        return $this->user->store($request);
     }
 
     /**

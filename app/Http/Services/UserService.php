@@ -11,7 +11,7 @@ class UserService
     }
     public function index()
     {
-        $users  = $this->user->paginate(3);
+        $users  = $this->user->paginate(1);
         if(!$users){
             return response()->json(['message' => 'Nenhum usuário encontrado'], 404);
         }
@@ -24,7 +24,7 @@ class UserService
     public function store($request)
     {
         $data = $request->validated();
-        $user = $this->User->create($data);
+        $user = $this->user->create($data);
         if(!$user){
             return response()->json(['message' => 'Erro ao criar usuário'], 400);
         }
@@ -36,7 +36,7 @@ class UserService
      */
     public function show(string $id)
     {
-        $user = $this->User->find($id);
+        $user = $this->user->find($id);
     }
 
     /**
@@ -45,7 +45,7 @@ class UserService
     public function update($request, string $id)
     {
         $data = $request->validated();
-        $user = $this->User->find($id);
+        $user = $this->user->find($id);
         if(!$user){
             return response()->json( ['message' => 'Usuário não encontrado'], 404);
         }
@@ -58,11 +58,11 @@ class UserService
      */
     public function destroy(string $id)
     {
-        $user = $this->User->find($id);
+        $user = $this->user->find($id);
         if(!$user){
             return response()->json( ['message' => 'Usuário não encontrado'], 404);
         }
         $user->delete();
-        return response()->json(['message'=> 'Deletado'], 200);
+        return response()->json(['message'=> 'Usuário deletado com sucesso'], 200);
     }
 }
