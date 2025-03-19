@@ -11,7 +11,7 @@ class UserService
     }
     public function index()
     {
-        $users = $this->user->paginate(1);
+        $users = $this->user->paginate(10);
         if(!$users){
             return response()->json(['message' => 'Nenhum usuário encontrado'], 404);
         }
@@ -50,7 +50,7 @@ class UserService
             return response()->json( ['message' => 'Usuário não encontrado'], 404);
         }
         $user->update($data);
-        return response()->json($user, 200);
+        return response()->json($user, 201);
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -42,9 +43,11 @@ class UserRequest extends FormRequest
     public function update(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email'=> 'required|email|unique:users,email',
-            'password'=> 'required|min:8|max:255'
+            'name' => 'max:255,nullable',
+            'email'=> ['nullable','email',Rule::unique('users')->ignore($this->route('id'))
+        ],
+            'password'=> 'nullable|min:8|max:255',
+            'role' => 'nullable|in:admin,editor',
         ];
     }
 
@@ -55,7 +58,7 @@ class UserRequest extends FormRequest
             'name.max' => 'O campo nome deve ter no máximo 255 caracteres',
             'email.required'=> 'O campo email é obrigatório',
             'email.email'=> 'O campo email deve ser um email válido',
-            'email.unique'=> 'O email informado já está em uso',
+            'email.unique'=> 'O email informado está em uso',
             'password.required'=> 'O campo senha é obrigatório',
             'password.min'=> 'O campo senha deve ter no mínimo 8 caracteres',
             'password.max'=> 'O campo senha deve ter no máximo 255 caracteres'

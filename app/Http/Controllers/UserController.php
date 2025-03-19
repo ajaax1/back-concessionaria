@@ -36,7 +36,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        return $this->user->update($request->all(), $id);
+        return $this->user->update($request, $id);
     }
 
     /**
