@@ -55,7 +55,7 @@ class UserService
             unset($data['password']);
         }
         $user->update($data);
-        return response()->json($user, 200);
+        return response()->json($user, 201);
     }
 
     /**
