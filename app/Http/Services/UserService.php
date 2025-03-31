@@ -11,7 +11,7 @@ class UserService
     }
     public function index()
     {
-        $users = $this->user->paginate(1);
+        $users = $this->user->paginate(10);
         if(!$users){
             return response()->json(['message' => 'Nenhum usuário encontrado'], 404);
         }
@@ -48,6 +48,11 @@ class UserService
         $user = $this->user->find($id);
         if(!$user){
             return response()->json( ['message' => 'Usuário não encontrado'], 404);
+        }
+        if(isset($data['password'])){
+            $user->password = bcrypt($data['password']);
+        }else{
+            unset($data['password']);
         }
         $user->update($data);
         return response()->json($user, 200);
